@@ -23,16 +23,16 @@ namespace NetKubernetes.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<InmuebleResponseDto>> GetInmuebles()
+		public async Task <ActionResult<IEnumerable<InmuebleResponseDto>>> GetInmuebles()
 		{
-			var inmuebles = _repository.GetAllInmuebles();
+			var inmuebles = await _repository.GetAllInmuebles();
 			return Ok(_mapper.Map<IEnumerable<InmuebleResponseDto>>(inmuebles));
 		}
 
-		[HttpGet("{id", Name = "GetInmuebleById)")]
-		public ActionResult<InmuebleResponseDto> GetInmuebleById(int id)
+		[HttpGet("{id}", Name = "GetInmuebleById)")]
+		public async Task <ActionResult<InmuebleResponseDto>> GetInmuebleById(int id)
 		{
-			var inmueble = _repository.GetInmuebleById(id) ??
+			var inmueble = await _repository.GetInmuebleById(id) ??
 				throw new MiddlewareException
 					(
 						HttpStatusCode.NotFound,
@@ -42,22 +42,22 @@ namespace NetKubernetes.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult<InmuebleResponseDto> CreateInmueble([FromBody] InmuebleRequestDto inmueble)
+		public async Task <ActionResult<InmuebleResponseDto>> CreateInmueble([FromBody] InmuebleRequestDto inmueble)
 		{
 			var inmuebleModel = _mapper.Map<Inmueble>(inmueble);
-			_repository.CreateInmueble(inmuebleModel);
-			_repository.SaveChanges();
+			await _repository.CreateInmueble(inmuebleModel);
+			await _repository.SaveChanges();
 
 			var inmuebleResponse = _mapper.Map<InmuebleResponseDto>(inmuebleModel);
 			return CreatedAtRoute(nameof(GetInmuebleById), new { inmuebleResponse.Id }, inmuebleResponse);
 		}
 
 		[HttpDelete("{id}")]
-		public ActionResult<InmuebleResponseDto> DeleteInmueble(int id)
+		public async Task <ActionResult<InmuebleResponseDto>> DeleteInmueble(int id)
 		{
 		
-			_repository.DeleteInmueble(id);
-			_repository.SaveChanges();
+			await _repository.DeleteInmueble(id);
+			await _repository.SaveChanges();
 			return Ok();
 		}
 	}

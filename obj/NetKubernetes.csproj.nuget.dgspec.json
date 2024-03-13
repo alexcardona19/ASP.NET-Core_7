@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\NET7\\NetKubernetes\\NetKubernetes.csproj": {}
+    "C:\\Repos\\ASP.NET-Core_7\\NetKubernetes.csproj": {}
   },
   "projects": {
-    "C:\\NET7\\NetKubernetes\\NetKubernetes.csproj": {
+    "C:\\Repos\\ASP.NET-Core_7\\NetKubernetes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\NET7\\NetKubernetes\\NetKubernetes.csproj",
+        "projectUniqueName": "C:\\Repos\\ASP.NET-Core_7\\NetKubernetes.csproj",
         "projectName": "NetKubernetes",
-        "projectPath": "C:\\NET7\\NetKubernetes\\NetKubernetes.csproj",
+        "projectPath": "C:\\Repos\\ASP.NET-Core_7\\NetKubernetes.csproj",
         "packagesPath": "C:\\Users\\alexa\\.nuget\\packages\\",
-        "outputPath": "C:\\NET7\\NetKubernetes\\obj\\",
+        "outputPath": "C:\\Repos\\ASP.NET-Core_7\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\alexa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -44,6 +44,10 @@
               "target": "Package",
               "version": "[12.0.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.10, )"
@@ -53,6 +57,10 @@
               "version": "[7.0.5, )"
             },
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[7.0.10, )"
             },

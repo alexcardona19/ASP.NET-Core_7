@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NetKubernetes.Middleware;
 using NetKubernetes.Models;
 using NetKubernetes.Token;
@@ -13,21 +14,23 @@ namespace NetKubernetes.Data.Inmuebles
 		private readonly IUsuarioSesion _usuarioSesion;
 		private readonly UserManager<Usuario> _userManager;
 
-		public InmuebleRepository(AppDbContext context, IUsuarioSesion sesion, UserManager<Usuario> userManager) {
-		    _context = context;
+		public InmuebleRepository(AppDbContext context, IUsuarioSesion sesion, UserManager<Usuario> userManager)
+		{
+			_context = context;
 			_usuarioSesion = sesion;
 			_userManager = userManager;
 		}
 		public async Task CreateInmueble(Inmueble inmueble)
 		{
-			var usuario = await _userManager.FindByIdAsync(_usuarioSesion.ObtenerUsuarioSesion()) ?? 
+			var usuario = await _userManager.FindByIdAsync(_usuarioSesion.ObtenerUsuarioSesion()) ??
 				throw new MiddlewareException
 				(
 					HttpStatusCode.Unauthorized,
 					new { mensaje = "El usuario no es valido para hacer esta inserción" }
 				);
 
-			if (inmueble is null) {
+			if (inmueble is null)
+			{
 				throw new MiddlewareException
 					(
 						HttpStatusCode.BadRequest,
@@ -38,30 +41,30 @@ namespace NetKubernetes.Data.Inmuebles
 			inmueble.FechaCreacion = DateTime.Now;
 			inmueble.UsuarioId = Guid.Parse(usuario!.Id);
 
-			_context.Inmuebles!.Add(inmueble);
+			await _context.Inmuebles!.AddAsync(inmueble);
 		}
 
-		public void DeleteInmueble(int id)
+		public async Task DeleteInmueble(int id)
 		{
-			var inmueble = _context.Inmuebles!
-				.FirstOrDefault(x => x.Id == id);
+			var inmueble = await _context.Inmuebles!
+				.FirstOrDefaultAsync(x => x.Id == id);
 
 			_context.Inmuebles!.Remove(inmueble!);
 		}
 
-		public IEnumerable<Inmueble> GetAllInmuebles()
+		public async Task<IEnumerable<Inmueble>> GetAllInmuebles()
 		{
-			return _context.Inmuebles!.ToList();
+			return await _context.Inmuebles!.ToListAsync();
 		}
 
-		public Inmueble GetInmuebleById(int id)
+		public async Task<Inmueble> GetInmuebleById(int id)
 		{
-			return _context.Inmuebles!.FirstOrDefault(x => x.Id == id)!;
+			return await _context.Inmuebles!.FirstOrDefaultAsync(x => x.Id == id)!;
 		}
 
-		public bool SaveChanges()
+		public async Task<bool> SaveChanges()
 		{
-			return (_context.SaveChanges() >= 0);
+			return ((await _context.SaveChangesAsync()) >= 0);
 		}
 	}
 }
